@@ -1,6 +1,6 @@
-import 'package:digital_computation/systematic_training/average_annual_growth_rate.dart';
-import 'package:digital_computation/systematic_training/decimals_power_page.dart';
-import 'package:digital_computation/systematic_training/rate_of_increase_page.dart';
+import 'package:digital_computation/page/systematic_training/average_annual_growth_rate.dart';
+import 'package:digital_computation/page/systematic_training/decimals_power_page.dart';
+import 'package:digital_computation/page/systematic_training/rate_of_increase_page.dart';
 import 'package:flutter/material.dart';
 
 class SystematicTrainingpPage extends StatefulWidget {

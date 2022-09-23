@@ -1,7 +1,7 @@
-import 'package:digital_computation/daily_practice/daily_practice_page.dart';
-import 'package:digital_computation/setting/setting_page.dart';
-import 'package:digital_computation/statistics/statistics_page.dart';
-import 'package:digital_computation/systematic_training/systematic_training_page.dart';
+import 'package:digital_computation/page/daily_practice/daily_practice_page.dart';
+import 'package:digital_computation/page/setting/setting_page.dart';
+import 'package:digital_computation/page/statistics/statistics_page.dart';
+import 'package:digital_computation/page/systematic_training/systematic_training_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: const TextTheme(
+            bodyLarge: TextStyle(color: Colors.black, fontSize: 18),
           bodyMedium: TextStyle(color: Colors.black, fontSize: 16),
         ),
         fontFamily: 'sanjiyunlvti'
