@@ -14,7 +14,6 @@ class PowWidget extends StatelessWidget {
     var result = math
         .pow(value, pow)
         .toStringAsFixed(2);
-
     return Row(
       children: [
         Text('$value'),

@@ -31,7 +31,7 @@ class _DecimalsPowerPageState extends State<DecimalsPowerPage> {
           children: [
             ListView.builder(
               itemBuilder: _itemBuilder,
-              itemCount: 100,
+              itemCount: 10,
             ),
             // _diffWidget(),
           ],

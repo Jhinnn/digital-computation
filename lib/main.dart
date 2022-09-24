@@ -17,8 +17,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: const TextTheme(
+            // titleLarge: TextStyle(
+            //     color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
+            // titleMedium: TextStyle(
+            //     color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
             bodyLarge: TextStyle(color: Colors.black, fontSize: 18),
           bodyMedium: TextStyle(color: Colors.black, fontSize: 16),
+            bodySmall: TextStyle(color: Colors.blue, fontSize: 16),
         ),
         fontFamily: 'sanjiyunlvti'
       ),
