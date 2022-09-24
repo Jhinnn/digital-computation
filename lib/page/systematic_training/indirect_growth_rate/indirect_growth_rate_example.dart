@@ -1,19 +1,27 @@
+import 'dart:math';
+
+import 'package:digital_computation/model/indirect_growth_rate_model.dart';
 import 'package:digital_computation/widget/pow_widget.dart';
 import 'package:digital_computation/widget/tips_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DecimalsPowerPage extends StatefulWidget {
-  final int baseNum;
-  final List<int> powerList;
-  const DecimalsPowerPage(
-      {Key? key, required this.baseNum, required this.powerList})
-      : super(key: key);
+/// 100 20%  120 60%  192  92%
+
+/// 0.6 + 0.2 + (0.12) = 0.92
+
+class IndirectGrowthRateExample extends StatefulWidget {
+  const IndirectGrowthRateExample({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<DecimalsPowerPage> createState() => _DecimalsPowerPageState();
+  State<IndirectGrowthRateExample> createState() =>
+      _IndirectGrowthRateExamplePageState();
 }
 
-class _DecimalsPowerPageState extends State<DecimalsPowerPage> {
+class _IndirectGrowthRateExamplePageState
+    extends State<IndirectGrowthRateExample> {
   int difficultyLevel = 0;
   List<String> difficultyLevelList = [
     'moderation',
@@ -25,7 +33,7 @@ class _DecimalsPowerPageState extends State<DecimalsPowerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('decimals power'),
+          title: const Text('IndirectGrowthRateExample'),
         ),
         body: Stack(
           children: [
@@ -39,32 +47,28 @@ class _DecimalsPowerPageState extends State<DecimalsPowerPage> {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    if (index != 0) {
-      List<double> list =
-          List.generate(10, ((i) => widget.baseNum + 0.1 * index + i * 0.01));
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 1),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ...widget.powerList.map(
-                (pow) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...list
-                        .map((e) => PowWidget(
-                            value: num.parse(e.toStringAsFixed(2)), pow: pow))
-                        .toList()
-                  ],
-                ),
-              )
-            ],
-          ),
+    double firstRate = Random().nextDouble() * 100;
+    double secondRate = Random().nextDouble() * 100;
+    double result = firstRate + secondRate + (firstRate * secondRate);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 1),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text('${firstRate.toStringAsFixed(2)}%'),
+            const Text('+'),
+            Text('${secondRate.toStringAsFixed(2)}%'),
+            const Text('+'),
+            Text('${firstRate.toStringAsFixed(2)}%'),
+            const Text('x'),
+            Text('${secondRate.toStringAsFixed(2)}%'),
+            const Text('='),
+            Text('${result.toStringAsFixed(2)}%')
+          ],
         ),
-      );
-    }
-    return Container();
+      ),
+    );
   }
 
   void showDifficultyMenu() {

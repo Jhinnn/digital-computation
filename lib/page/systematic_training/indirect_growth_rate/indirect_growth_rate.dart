@@ -1,19 +1,23 @@
 import 'dart:math';
-import 'package:digital_computation/model/amout_of_current_model.dart';
-import 'package:digital_computation/model/average_annual_growth_rate_model.dart';
-import 'package:digital_computation/page/systematic_training/average_annual_growth_rate/decimals_power_page.dart';
+import 'package:digital_computation/model/indirect_growth_rate_model.dart';
+import 'package:digital_computation/page/systematic_training/average_annual_growth_rate/average_annual_growth_rate_example.dart';
+import 'package:digital_computation/page/systematic_training/indirect_growth_rate/indirect_growth_rate_example.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BasePeriodAmountPage extends StatefulWidget {
-  const BasePeriodAmountPage({Key? key}) : super(key: key);
+/// 100 20%  120 60%  192  92%
+
+/// 0.6 + 0.2 + (0.12) = 0.92
+
+class IndirectGrowthRate extends StatefulWidget {
+  const IndirectGrowthRate({Key? key}) : super(key: key);
 
   @override
-  State<BasePeriodAmountPage> createState() => _BasePeriodAmountPageState();
+  State<IndirectGrowthRate> createState() => _IndirectGrowthRateState();
 }
 
-class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
-  final List<AmoutOfCurrentModel> _amoutOfCurrentModelList = [];
+class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
+  final List<IndirectGrowthRateModel> _indirectGrowthRateModel = [];
 
   @override
   void initState() {
@@ -24,38 +28,26 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
 
   _createData() {
     for (var i = 0; i < 10; i++) {
-      int basePeriodYear = Random().nextInt(2) + 2020;
-      int currentYear = basePeriodYear + 1;
+      int currentYear = Random().nextInt(2) + 2021;
+      int firstYear = currentYear - 2;
+      int secondYear = currentYear - 1;
 
-      double currentValue = Random().nextDouble() * 4000 + 1000;
-      double growthRate = Random().nextDouble();
-      double basePeriodValue = currentValue / (1 + growthRate);
+      double firstGrowthRate = Random().nextDouble();
+      double secondGrowthRate = Random().nextDouble();
 
-      AmoutOfCurrentModel amoutOfCurrentModel = AmoutOfCurrentModel(
-          basePeriodYear,
+      double totalGrowthRate = firstGrowthRate +
+          secondGrowthRate +
+          (secondGrowthRate * firstGrowthRate);
+
+      IndirectGrowthRateModel indirectGrowthRateModel = IndirectGrowthRateModel(
+          firstYear,
+          secondYear,
           currentYear,
-          basePeriodValue,
-          currentValue,
-          growthRate);
+          firstGrowthRate,
+          secondGrowthRate,
+          totalGrowthRate);
 
-      _amoutOfCurrentModelList.add(amoutOfCurrentModel);
-
-      // if (currentYear - basePeriodYear <= 5 &&
-      //     currentYear - basePeriodYear >= 2) {
-      //   double avgValue = currentValue / basePeriodValue;
-
-      //   double averageAnnualGrowthRate =
-      //       pow(avgValue, 1 / (currentYear - basePeriodYear)) - 1;
-      //   AverageAnnualGrowthRateModel annualGrowthRateModel =
-      //       AverageAnnualGrowthRateModel(basePeriodYear, currentYear,
-      //           basePeriodValue, currentValue, averageAnnualGrowthRate);
-
-      //   _averageAnnualGrowthRateModelList.add(annualGrowthRateModel);
-
-      //   if (_averageAnnualGrowthRateModelList.length == 10) {
-      //     break;
-      //   }
-      // }
+      _indirectGrowthRateModel.add(indirectGrowthRateModel);
     }
 
     setState(() {});
@@ -65,13 +57,12 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Amount of current'),
+          title: const Text('indirect growth rate'),
           actions: [
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const DecimalsPowerPage(
-                          baseNum: 1, powerList: [2, 3, 4, 5])));
+                      builder: (_) => const IndirectGrowthRateExample()));
                 },
                 icon: const Icon(Icons.money_rounded))
           ],
@@ -81,14 +72,14 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '问题：某个地方2022年某种东西为数量为a，2022年同比增长x%，问2021年有这种东西数量为多少？',
+                '问题：某个地方2020年某种东西数量同比增长x%，2019年同比增长x%，问2021年比2019增长率是多少？',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
             Expanded(
               child: ListView.builder(
                 itemBuilder: _itemBuilder,
-                itemCount: _amoutOfCurrentModelList.length,
+                itemCount: _indirectGrowthRateModel.length,
               ),
             ),
             InkWell(
@@ -108,7 +99,8 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    AmoutOfCurrentModel amoutOfCurrentModel = _amoutOfCurrentModelList[index];
+    IndirectGrowthRateModel indirectGrowthRateModel =
+        _indirectGrowthRateModel[index];
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -116,7 +108,7 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${index + 1},  ${amoutOfCurrentModel.currentYear}值为${amoutOfCurrentModel.currentValue.toStringAsFixed(2)}, ${amoutOfCurrentModel.currentYear}年同比增长${(amoutOfCurrentModel.growthRate * 100).toStringAsFixed(1)}%, 则${amoutOfCurrentModel.basePeriodYear}值为：${amoutOfCurrentModel.basePeriodValue.toStringAsFixed(2)}',
+            '${index + 1},  ${indirectGrowthRateModel.secondYear}增长率为${(indirectGrowthRateModel.firstGrowthRate * 100).toStringAsFixed(1)}%, ${indirectGrowthRateModel.currentYear}年增长率${(indirectGrowthRateModel.secondGrowthRate * 100).toStringAsFixed(1)}%, 则${indirectGrowthRateModel.firstYear}到${indirectGrowthRateModel.currentYear}增长率为：${(indirectGrowthRateModel.totalGrowthRate * 100).toStringAsFixed(1)}%',
           ),
           const SizedBox(
             height: 10,
@@ -146,9 +138,10 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 10),
-                      const Text('a年某种东西数量为A，同比增加x%,问b(b = a - 1)年这种东西为多少'),
+                      const Text('a年某种东西数量同比增长x%，a+1年同比增长y%，问a+1年比a-1增长率是多少'),
                       const SizedBox(height: 10),
-                      const Text('B(1+x%)=A，因次 B = A / (1 + x%)'),
+                      const Text(
+                          't1(1+x%)(1+y%)=t2，求 (t2 - t1) / t1,结果为： t2/t1 - 1 ,已知 t2/t1 = (1+x%)(1+y%) = 1+ x% + y% + xy%,所以 t2 / t1 = x% + y% + xy%'),
                       const SizedBox(height: 10),
                       Text(
                         'example',
@@ -156,9 +149,10 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
                       ),
                       const SizedBox(height: 10),
                       const Text(
-                          '2022年某地方财政收入为2200亿,2022年同比增长10%,则2021财政收入为2000亿'),
+                          '2020年某地方财政收入为1000亿,2021年同比增长10%,2022同比增长20%吗，那么2021年1100亿，2022年为1320亿，增长率为32% = 10% + 20% + 10% * 20%'),
                       const SizedBox(height: 10),
-                      const Text('2000(1+10%) = 2200'),
+                      const Text(
+                          '1000(1+10%)(1+20%) = 1320, 1000(1 + 32%) = 1320,   10% + 20% + 10% x 20% = 32%'),
                     ],
                   ),
                 )),

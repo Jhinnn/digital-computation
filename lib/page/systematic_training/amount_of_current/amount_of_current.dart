@@ -1,18 +1,17 @@
 import 'dart:math';
 import 'package:digital_computation/model/amout_of_current_model.dart';
-import 'package:digital_computation/model/average_annual_growth_rate_model.dart';
-import 'package:digital_computation/page/systematic_training/average_annual_growth_rate/decimals_power_page.dart';
+import 'package:digital_computation/page/systematic_training/average_annual_growth_rate/average_annual_growth_rate_example.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AmountOfCurrentPage extends StatefulWidget {
-  const AmountOfCurrentPage({Key? key}) : super(key: key);
+class AmountOfCurrent extends StatefulWidget {
+  const AmountOfCurrent({Key? key}) : super(key: key);
 
   @override
-  State<AmountOfCurrentPage> createState() => _AmountOfCurrentPageState();
+  State<AmountOfCurrent> createState() => _AmountOfCurrentState();
 }
 
-class _AmountOfCurrentPageState extends State<AmountOfCurrentPage> {
+class _AmountOfCurrentState extends State<AmountOfCurrent> {
   final List<AmoutOfCurrentModel> _amoutOfCurrentModelList = [];
 
   @override
@@ -70,7 +69,7 @@ class _AmountOfCurrentPageState extends State<AmountOfCurrentPage> {
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const DecimalsPowerPage(
+                      builder: (_) => const AverageAnnualGrowthRateExample(
                           baseNum: 1, powerList: [2, 3, 4, 5])));
                 },
                 icon: const Icon(Icons.money_rounded))
