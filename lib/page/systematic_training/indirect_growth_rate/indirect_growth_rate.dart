@@ -17,7 +17,7 @@ class IndirectGrowthRate extends StatefulWidget {
 }
 
 class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
-  final List<IndirectGrowthRateModel> _indirectGrowthRateModel = [];
+  final List<IndirectGrowthRateModel> _indirectGrowthRateModelList = [];
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
           secondGrowthRate,
           totalGrowthRate);
 
-      _indirectGrowthRateModel.add(indirectGrowthRateModel);
+      _indirectGrowthRateModelList.add(indirectGrowthRateModel);
     }
 
     setState(() {});
@@ -79,7 +79,7 @@ class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
             Expanded(
               child: ListView.builder(
                 itemBuilder: _itemBuilder,
-                itemCount: _indirectGrowthRateModel.length,
+                itemCount: _indirectGrowthRateModelList.length,
               ),
             ),
             InkWell(
@@ -100,7 +100,7 @@ class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
 
   Widget _itemBuilder(BuildContext context, int index) {
     IndirectGrowthRateModel indirectGrowthRateModel =
-        _indirectGrowthRateModel[index];
+        _indirectGrowthRateModelList[index];
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
