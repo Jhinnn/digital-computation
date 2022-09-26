@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:digital_computation/model/two_period_specific_gravity_difference_model.dart';
+import 'package:digital_computation/page/systematic_training/two_period_specific_gravity_difference/two_period_specific_gravity_difference_example.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -75,9 +76,9 @@ class _TwoPeriodSpecificGravityDifferenceState
           actions: [
             IconButton(
                 onPressed: () {
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (_) =>
-                  //         const TwoPeriodSpecificGravityDifferenceExample()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) =>
+                          const TwoPeriodSpecificGravityDifferenceExample()));
                 },
                 icon: const Icon(Icons.money_rounded))
           ],
