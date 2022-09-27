@@ -29,7 +29,7 @@ class _TwoPeriodSpecificGravityDifferenceState
   }
 
   _createData() {
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
       int currentYear = Random().nextInt(2) + 2021;
       int basePeriodYear = currentYear - 1;
 
@@ -107,7 +107,22 @@ class _TwoPeriodSpecificGravityDifferenceState
                         top: BorderSide(color: Colors.grey, width: 0.5))),
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: const Text('analysis'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          showBottonView();
+                        },
+                        child: const Text('analysis')),
+                    InkWell(
+                        onTap: () {
+                          showAnswerBottonView(
+                              _twoPeriodSpecificGravityDifferenceModelList);
+                        },
+                        child: const Text('answer')),
+                  ],
+                ),
               ),
             )
           ],
@@ -128,7 +143,7 @@ class _TwoPeriodSpecificGravityDifferenceState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${index + 1},  ${indirectGrowthRateModel.currentYear}某地方一种东西总量为:${indirectGrowthRateModel.totalValue.toStringAsFixed(2)},同比增长${(indirectGrowthRateModel.totalValueGrowthRate * 100).toStringAsFixed(1)}%, 其中一种东西总量为${indirectGrowthRateModel.targetValue.toStringAsFixed(2)},同比增长${(indirectGrowthRateModel.targetValueGrowthRate * 100).toStringAsFixed(1)}%, 则${indirectGrowthRateModel.currentYear}到B占A的比重$symbol${(indirectGrowthRateModel.specificGravityValue * 100).toStringAsFixed(1)}%',
+            '${index + 1},  ${indirectGrowthRateModel.currentYear}某地方一种东西总量为:${indirectGrowthRateModel.totalValue.toStringAsFixed(2)},同比增长${(indirectGrowthRateModel.totalValueGrowthRate * 100).toStringAsFixed(1)}%, 其中一种东西总量为${indirectGrowthRateModel.targetValue.toStringAsFixed(2)},同比增长${(indirectGrowthRateModel.targetValueGrowthRate * 100).toStringAsFixed(1)}%, 则${indirectGrowthRateModel.currentYear}到B占A的比重',
           ),
           const SizedBox(
             height: 10,
@@ -180,4 +195,39 @@ class _TwoPeriodSpecificGravityDifferenceState
           );
         },
       );
+      
+  void showAnswerBottonView(
+      List<TwoPeriodSpecificGravityDifferenceModel>
+          twoPeriodSpecificGravityDifferenceModelList) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Material(
+          type: MaterialType.transparency,
+          child: Center(
+            child: Container(
+                height: 250,
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6)),
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4, childAspectRatio: 2),
+                        itemCount:
+                            twoPeriodSpecificGravityDifferenceModelList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Center(
+                            child: Text(
+                                '${index + 1}.${(twoPeriodSpecificGravityDifferenceModelList[index].specificGravityValue * 100).toStringAsFixed(1)}%'),
+                          );
+                        }))),
+          ),
+        );
+      },
+    );
+  }
 }

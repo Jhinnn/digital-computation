@@ -21,11 +21,11 @@ class MyApp extends StatelessWidget {
             //     color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
             // titleMedium: TextStyle(
             //     color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-            bodyLarge: TextStyle(color: Colors.black, fontSize: 18),
-          bodyMedium: TextStyle(color: Colors.black, fontSize: 16),
+          bodyLarge: TextStyle(color: Colors.black, fontSize: 16),
+          bodyMedium: TextStyle(color: Colors.black, fontSize: 15),
             bodySmall: TextStyle(color: Colors.blue, fontSize: 16),
         ),
-        fontFamily: 'sanjiyunlvti'
+        // fontFamily: 'sanjiyunlvti'
       ),
       home: const HomePage(title: 'Calculate the practice'),
     );

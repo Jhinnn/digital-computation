@@ -13,7 +13,7 @@ class AmountOfCurrent extends StatefulWidget {
 
 class _AmountOfCurrentState extends State<AmountOfCurrent> {
   final List<AmoutOfCurrentModel> _amoutOfCurrentModelList = [];
-
+  bool _isVisibleAnswer = false;
   @override
   void initState() {
     super.initState();
@@ -22,11 +22,12 @@ class _AmountOfCurrentState extends State<AmountOfCurrent> {
   }
 
   _createData() {
-    for (var i = 0; i < 10; i++) {
-      int basePeriodYear = Random().nextInt(2) + 2019;
+    _amoutOfCurrentModelList.clear();
+    for (var i = 0; i < 20; i++) {
+      int basePeriodYear = Random().nextInt(2) + 2020;
       int currentYear = basePeriodYear + 1;
 
-      double basePeriodValue = Random().nextDouble() * 4000 + 1000;
+      double basePeriodValue = Random().nextDouble() * 10000 + 10;
       double growthRate = Random().nextDouble();
       double currentValue = basePeriodValue * (1 + growthRate);
 
@@ -38,23 +39,6 @@ class _AmountOfCurrentState extends State<AmountOfCurrent> {
           growthRate);
 
       _amoutOfCurrentModelList.add(amoutOfCurrentModel);
-
-      // if (currentYear - basePeriodYear <= 5 &&
-      //     currentYear - basePeriodYear >= 2) {
-      //   double avgValue = currentValue / basePeriodValue;
-
-      //   double averageAnnualGrowthRate =
-      //       pow(avgValue, 1 / (currentYear - basePeriodYear)) - 1;
-      //   AverageAnnualGrowthRateModel annualGrowthRateModel =
-      //       AverageAnnualGrowthRateModel(basePeriodYear, currentYear,
-      //           basePeriodValue, currentValue, averageAnnualGrowthRate);
-
-      //   _averageAnnualGrowthRateModelList.add(annualGrowthRateModel);
-
-      //   if (_averageAnnualGrowthRateModelList.length == 10) {
-      //     break;
-      //   }
-      // }
     }
 
     setState(() {});
@@ -68,11 +52,9 @@ class _AmountOfCurrentState extends State<AmountOfCurrent> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const AverageAnnualGrowthRateExample(
-                          baseNum: 1, powerList: [2, 3, 4, 5])));
+                  _createData();
                 },
-                icon: const Icon(Icons.money_rounded))
+                icon: const Icon(Icons.refresh))
           ],
         ),
         body: Column(
@@ -90,16 +72,27 @@ class _AmountOfCurrentState extends State<AmountOfCurrent> {
                 itemCount: _amoutOfCurrentModelList.length,
               ),
             ),
-            InkWell(
-              onTap: showBottonView,
-              child: Container(
-                height: 44,
-                decoration: const BoxDecoration(
-                    border: Border(
-                        top: BorderSide(color: Colors.grey, width: 0.5))),
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: const Text('analysis'),
+            Container(
+              height: 44,
+              decoration: const BoxDecoration(
+                  border:
+                      Border(top: BorderSide(color: Colors.grey, width: 0.5))),
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        showBottonView();
+                      },
+                      child: const Text('analysis')),
+                  InkWell(
+                      onTap: () {
+                        showAnswerBottonView(_amoutOfCurrentModelList);
+                      },
+                      child: const Text('answer')),
+                ],
               ),
             )
           ],
@@ -108,22 +101,21 @@ class _AmountOfCurrentState extends State<AmountOfCurrent> {
 
   Widget _itemBuilder(BuildContext context, int index) {
     AmoutOfCurrentModel amoutOfCurrentModel = _amoutOfCurrentModelList[index];
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${index + 1},   在${amoutOfCurrentModel.basePeriodYear}, 值为${amoutOfCurrentModel.basePeriodValue.toStringAsFixed(2)}, ${amoutOfCurrentModel.currentYear}年同比增长${(amoutOfCurrentModel.growthRate * 100).toStringAsFixed(3)}%, 则${amoutOfCurrentModel.currentYear}值为：${amoutOfCurrentModel.currentValue.toStringAsFixed(2)}',
+            '${index + 1}.${amoutOfCurrentModel.basePeriodYear},值为${amoutOfCurrentModel.basePeriodValue.toStringAsFixed(2)},${amoutOfCurrentModel.currentYear}年同比增长${(amoutOfCurrentModel.growthRate * 100).toStringAsFixed(1)}%,则${amoutOfCurrentModel.currentYear}值为:',
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          // Text(
-          //   '答案：${annualGrowthRateModel.currentValue.toStringAsFixed(0)}/${annualGrowthRateModel.basePeriodValue.toStringAsFixed(0)}=${avg.toStringAsFixed(2)},开$year次方,值为:${pow(avg, 1 / year).toStringAsFixed(3)},年均增长率为：${(pow(avg, 1 / year) * 100 % 100).toStringAsFixed(1)}%',
-          //   style: Theme.of(context).textTheme.bodySmall,
-          // )
+          // const SizedBox(
+          //   height: 5,
+          // ),
+          // Visibility(
+          //     visible: _isVisibleAnswer,
+          //     child: Text(
+          //         '值为：${amoutOfCurrentModel.currentValue.toStringAsFixed(1)}'))
         ],
       ),
     );
@@ -161,6 +153,38 @@ class _AmountOfCurrentState extends State<AmountOfCurrent> {
                     ],
                   ),
                 )),
+          );
+        },
+      );
+
+  void showAnswerBottonView(
+          List<AmoutOfCurrentModel> amoutOfCurrentModelList) =>
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Material(
+            type: MaterialType.transparency,
+            child: Center(
+              child: Container(
+                  height: 250,
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6)),
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4, childAspectRatio: 2),
+                          itemCount: amoutOfCurrentModelList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Center(
+                              child: Text(
+                                  '${index + 1}.${_amoutOfCurrentModelList[index].currentValue.toStringAsFixed(1)}'),
+                            );
+                          }))),
+            ),
           );
         },
       );

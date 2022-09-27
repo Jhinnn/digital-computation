@@ -23,7 +23,8 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
   }
 
   _createData() {
-    for (var i = 0; i < 10; i++) {
+    _amoutOfCurrentModelList.clear();
+    for (var i = 0; i < 20; i++) {
       int basePeriodYear = Random().nextInt(2) + 2020;
       int currentYear = basePeriodYear + 1;
 
@@ -37,25 +38,7 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
           basePeriodValue,
           currentValue,
           growthRate);
-
       _amoutOfCurrentModelList.add(amoutOfCurrentModel);
-
-      // if (currentYear - basePeriodYear <= 5 &&
-      //     currentYear - basePeriodYear >= 2) {
-      //   double avgValue = currentValue / basePeriodValue;
-
-      //   double averageAnnualGrowthRate =
-      //       pow(avgValue, 1 / (currentYear - basePeriodYear)) - 1;
-      //   AverageAnnualGrowthRateModel annualGrowthRateModel =
-      //       AverageAnnualGrowthRateModel(basePeriodYear, currentYear,
-      //           basePeriodValue, currentValue, averageAnnualGrowthRate);
-
-      //   _averageAnnualGrowthRateModelList.add(annualGrowthRateModel);
-
-      //   if (_averageAnnualGrowthRateModelList.length == 10) {
-      //     break;
-      //   }
-      // }
     }
 
     setState(() {});
@@ -65,15 +48,13 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Amount of current'),
+          title: const Text('base period amount'),
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const AverageAnnualGrowthRateExample(
-                          baseNum: 1, powerList: [2, 3, 4, 5])));
+                  _createData();
                 },
-                icon: const Icon(Icons.money_rounded))
+                icon: const Icon(Icons.refresh))
           ],
         ),
         body: Column(
@@ -100,7 +81,21 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
                         top: BorderSide(color: Colors.grey, width: 0.5))),
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: const Text('analysis'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          showBottonView();
+                        },
+                        child: const Text('analysis')),
+                    InkWell(
+                        onTap: () {
+                          showAnswerBottonView(_amoutOfCurrentModelList);
+                        },
+                        child: const Text('answer')),
+                  ],
+                ),
               ),
             )
           ],
@@ -116,11 +111,11 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${index + 1},  ${amoutOfCurrentModel.currentYear}值为${amoutOfCurrentModel.currentValue.toStringAsFixed(2)}, ${amoutOfCurrentModel.currentYear}年同比增长${(amoutOfCurrentModel.growthRate * 100).toStringAsFixed(1)}%, 则${amoutOfCurrentModel.basePeriodYear}值为：${amoutOfCurrentModel.basePeriodValue.toStringAsFixed(2)}',
+            '${index + 1}.${amoutOfCurrentModel.currentYear}值为${amoutOfCurrentModel.currentValue.toStringAsFixed(2)},${amoutOfCurrentModel.currentYear}年同比增长${(amoutOfCurrentModel.growthRate * 100).toStringAsFixed(1)}%,则${amoutOfCurrentModel.basePeriodYear}值为:',
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
           // Text(
           //   '答案：${annualGrowthRateModel.currentValue.toStringAsFixed(0)}/${annualGrowthRateModel.basePeriodValue.toStringAsFixed(0)}=${avg.toStringAsFixed(2)},开$year次方,值为:${pow(avg, 1 / year).toStringAsFixed(3)},年均增长率为：${(pow(avg, 1 / year) * 100 % 100).toStringAsFixed(1)}%',
           //   style: Theme.of(context).textTheme.bodySmall,
@@ -165,4 +160,37 @@ class _BasePeriodAmountPageState extends State<BasePeriodAmountPage> {
           );
         },
       );
+
+void showAnswerBottonView(
+          List<AmoutOfCurrentModel> amoutOfCurrentModelList) =>
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Material(
+            type: MaterialType.transparency,
+            child: Center(
+              child: Container(
+                  height: 250,
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6)),
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4, childAspectRatio: 2),
+                          itemCount: amoutOfCurrentModelList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Center(
+                              child: Text(
+                                  '${index + 1}.${_amoutOfCurrentModelList[index].basePeriodValue.toStringAsFixed(1)}'),
+                            );
+                          }))),
+            ),
+          );
+        },
+      );
+      
 }

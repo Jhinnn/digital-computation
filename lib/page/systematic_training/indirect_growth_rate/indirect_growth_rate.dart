@@ -1,10 +1,9 @@
 import 'dart:math';
 import 'package:digital_computation/model/indirect_growth_rate_model.dart';
-import 'package:digital_computation/page/systematic_training/average_annual_growth_rate/average_annual_growth_rate_example.dart';
 import 'package:digital_computation/page/systematic_training/indirect_growth_rate/indirect_growth_rate_example.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_tex/flutter_tex.dart';
 /// 100 20%  120 60%  192  92%
 
 /// 0.6 + 0.2 + (0.12) = 0.92
@@ -27,7 +26,7 @@ class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
   }
 
   _createData() {
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
       int currentYear = Random().nextInt(2) + 2021;
       int firstYear = currentYear - 2;
       int secondYear = currentYear - 1;
@@ -91,7 +90,21 @@ class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
                         top: BorderSide(color: Colors.grey, width: 0.5))),
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: const Text('analysis'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          showBottonView();
+                        },
+                        child: const Text('analysis')),
+                    InkWell(
+                        onTap: () {
+                          showAnswerBottonView(_indirectGrowthRateModelList);
+                        },
+                        child: const Text('answer')),
+                  ],
+                ),
               ),
             )
           ],
@@ -101,22 +114,15 @@ class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
   Widget _itemBuilder(BuildContext context, int index) {
     IndirectGrowthRateModel indirectGrowthRateModel =
         _indirectGrowthRateModelList[index];
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${index + 1},  ${indirectGrowthRateModel.secondYear}增长率为${(indirectGrowthRateModel.firstGrowthRate * 100).toStringAsFixed(1)}%, ${indirectGrowthRateModel.currentYear}年增长率${(indirectGrowthRateModel.secondGrowthRate * 100).toStringAsFixed(1)}%, 则${indirectGrowthRateModel.firstYear}到${indirectGrowthRateModel.currentYear}增长率为：${(indirectGrowthRateModel.totalGrowthRate * 100).toStringAsFixed(1)}%',
+            '${index + 1},${indirectGrowthRateModel.secondYear}增长率为${(indirectGrowthRateModel.firstGrowthRate * 100).toStringAsFixed(1)}%, ${indirectGrowthRateModel.currentYear}年增长率${(indirectGrowthRateModel.secondGrowthRate * 100).toStringAsFixed(1)}%, 则${indirectGrowthRateModel.firstYear}到${indirectGrowthRateModel.currentYear}增长率为:',
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          // Text(
-          //   '答案：${annualGrowthRateModel.currentValue.toStringAsFixed(0)}/${annualGrowthRateModel.basePeriodValue.toStringAsFixed(0)}=${avg.toStringAsFixed(2)},开$year次方,值为:${pow(avg, 1 / year).toStringAsFixed(3)},年均增长率为：${(pow(avg, 1 / year) * 100 % 100).toStringAsFixed(1)}%',
-          //   style: Theme.of(context).textTheme.bodySmall,
-          // )
+         
         ],
       ),
     );
@@ -127,12 +133,12 @@ class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
         builder: (context) {
           return Material(
             child: SizedBox(
-                height: 400,
+                height: 500,
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    children: [
+                    children: [              
                       Text(
                         'analysis',
                         style: Theme.of(context).textTheme.titleLarge,
@@ -159,4 +165,37 @@ class _IndirectGrowthRateState extends State<IndirectGrowthRate> {
           );
         },
       );
+      
+  void showAnswerBottonView(
+      List<IndirectGrowthRateModel> indirectGrowthRateModelList) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Material(
+          type: MaterialType.transparency,
+          child: Center(
+            child: Container(
+                height: 250,
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6)),
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4, childAspectRatio: 2),
+                        itemCount: indirectGrowthRateModelList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Center(
+                            child: Text(
+                                '${index + 1}.${(indirectGrowthRateModelList[index].totalGrowthRate * 100).toStringAsFixed(1)}%'),
+                          );
+                        }))),
+          ),
+        );
+      },
+    );
+  }
 }

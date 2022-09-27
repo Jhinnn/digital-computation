@@ -1,10 +1,5 @@
 import 'dart:math';
-import 'package:digital_computation/widget/tips_widget.dart';
 import 'package:flutter/material.dart';
-
-/// 100 20%  120 60%  192  92%
-
-/// 0.6 + 0.2 + (0.12) = 0.92
 
 class IndirectGrowthRateExample extends StatefulWidget {
   const IndirectGrowthRateExample({
@@ -18,17 +13,26 @@ class IndirectGrowthRateExample extends StatefulWidget {
 
 class _IndirectGrowthRateExamplePageState
     extends State<IndirectGrowthRateExample> {
- 
+  bool _isVisbleAnswer = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('IndirectGrowthRateExample'),
-          
+          actions: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isVisbleAnswer = !_isVisbleAnswer;
+                  });
+                },
+                icon: const Icon(Icons.remove_red_eye))
+          ],
         ),
         body: ListView.builder(
           itemBuilder: _itemBuilder,
-          itemCount: 10,
+          itemCount: 20,
         ));
   }
 
@@ -40,7 +44,7 @@ class _IndirectGrowthRateExamplePageState
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 1),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text('${(firstRate * 100).toStringAsFixed(1)}%'),
             const Text('+'),
@@ -50,12 +54,12 @@ class _IndirectGrowthRateExamplePageState
             const Text('x'),
             Text('${(secondRate * 100).toStringAsFixed(1)}%'),
             const Text('='),
-            Text('${(result * 100).toStringAsFixed(1)}%')
+            Visibility(
+                visible: _isVisbleAnswer,
+                child: Text('${(result * 100).toStringAsFixed(1)}%'))
           ],
         ),
       ),
     );
   }
-  
-  
 }

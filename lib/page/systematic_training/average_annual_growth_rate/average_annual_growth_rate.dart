@@ -23,9 +23,9 @@ class _AverageAnnualGrowthRateState extends State<AverageAnnualGrowthRate> {
   }
 
   _createData() {
-    for (var i = 0; i < 100; i++) {
-      int currentYear = Random().nextInt(2) + 2021;
-      int basePeriodYear = currentYear - Random().nextInt(3) + 2;
+    for (var i = 0; i < 20; i++) {
+      int currentYear = Random().nextInt(3) + 2021;
+      int basePeriodYear = currentYear - Random().nextInt(2) - 2;
       double basePeriodValue = Random().nextDouble() * 4000 + 1000;
       double currentValue = Random().nextDouble() * 5000 + 5000;
 
@@ -82,7 +82,22 @@ class _AverageAnnualGrowthRateState extends State<AverageAnnualGrowthRate> {
                         top: BorderSide(color: Colors.grey, width: 0.5))),
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: const Text('analysis'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            showBottonView();
+                          },
+                          child: const Text('analysis')),
+                      InkWell(
+                          onTap: () {
+                            showAnswerBottonView(
+                                _averageAnnualGrowthRateModelList);
+                          },
+                          child: const Text('answer')),
+                    ],
+                  )
               ),
             )
           ],
@@ -104,20 +119,8 @@ class _AverageAnnualGrowthRateState extends State<AverageAnnualGrowthRate> {
         annualGrowthRateModel.basePeriodYear;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${index + 1},  在${annualGrowthRateModel.basePeriodYear}, 值为${annualGrowthRateModel.basePeriodValue.toStringAsFixed(2)},到${annualGrowthRateModel.currentYear},值为${annualGrowthRateModel.currentValue.toStringAsFixed(2)},年均增长率为$averageAnnualGrowthRate%',
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            '答案：${annualGrowthRateModel.currentValue.toStringAsFixed(0)}/${annualGrowthRateModel.basePeriodValue.toStringAsFixed(0)}=${avg.toStringAsFixed(2)},开$year次方,值为:${pow(avg, 1 / year).toStringAsFixed(3)},年均增长率为：${(pow(avg, 1 / year) * 100 % 100).toStringAsFixed(1)}%',
-            style: Theme.of(context).textTheme.bodySmall,
-          )
-        ],
+      child: Text(
+        '${index + 1},在${annualGrowthRateModel.basePeriodYear}, 值为${annualGrowthRateModel.basePeriodValue.toStringAsFixed(2)},到${annualGrowthRateModel.currentYear},值为${annualGrowthRateModel.currentValue.toStringAsFixed(2)},${annualGrowthRateModel.currentYear}到${annualGrowthRateModel.basePeriodYear}年均增长率为:',
       ),
     );
   }
@@ -158,4 +161,37 @@ class _AverageAnnualGrowthRateState extends State<AverageAnnualGrowthRate> {
           );
         },
       );
+      
+  void showAnswerBottonView(
+      List<AverageAnnualGrowthRateModel> averageAnnualGrowthRateModelList) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Material(
+          type: MaterialType.transparency,
+          child: Center(
+            child: Container(
+                height: 250,
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6)),
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4, childAspectRatio: 2),
+                        itemCount: averageAnnualGrowthRateModelList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Center(
+                            child: Text(
+                                '${index + 1}.${(averageAnnualGrowthRateModelList[index].averageAnnualGrowthRate * 100).toStringAsFixed(1)}%'),
+                          );
+                        }))),
+          ),
+        );
+      },
+    );
+  }
 }

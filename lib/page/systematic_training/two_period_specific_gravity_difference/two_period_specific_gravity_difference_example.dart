@@ -31,17 +31,17 @@ class _TwoPeriodSpecificGravityDifferenceExampleState
                   id: "id_0",
                   child: TeXViewColumn(children: [
                     TeXViewDocument(r"""<p>     
-                       $$x = {{A \over B} - {A \over 1+a } / {B \over 1+b }}$$</p>""",
+                       $$x = {{A \over B} - \frac{A \over 1+a }{B \over 1+b }}$$</p>""",
                         style: TeXViewStyle.fromCSS(
                             'padding: 0px; color: green; background: white')),
                     TeXViewDocument(r"""<p>     
-                       $$={{A \over B} - {A(1+b) \over B(1+a)}}= {{A \over B}( {1- {1+b \over 1+a})}}=$$</p>""",
+                       $$={{A \over B} - {A \times (1+b) \over B \times (1+a)}}=$$</p>""",
                         style: TeXViewStyle.fromCSS(
                             'padding: 0px; color: green; background: white')),
                     TeXViewDocument(r"""<p>     
-                       $$={{A \over B}( {1- {1+b \over 1+a})}}={(a - b)*{A \over B}*{ 1 \over 1+a}}$$</p>""",
+                       $$={{A \over B} \times ( {1- {1+b \over 1+a})}}={(a - b) \times {A \over B} \times { 1 \over 1+a}}$$</p>""",
                         style: TeXViewStyle.fromCSS(
-                            'padding: 0px; color: green; background: white')),
+                            'padding: 0px; color: green; background: white')),                 
                   ]),
                 )
               ]),
