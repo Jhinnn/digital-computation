@@ -39,7 +39,6 @@ class _AverageAnnualGrowthRateState extends State<AverageAnnualGrowthRate> {
 
       _averageAnnualGrowthRateModelList.add(annualGrowthRateModel);
     }
-
     setState(() {});
   }
 

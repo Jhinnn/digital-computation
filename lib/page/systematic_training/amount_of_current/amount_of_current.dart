@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:digital_computation/model/amout_of_current_model.dart';
-import 'package:digital_computation/page/systematic_training/average_annual_growth_rate/average_annual_growth_rate_example.dart';
+import 'package:digital_computation/page/systematic_training/amount_of_current/amount_of_current_example.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,6 +50,12 @@ class _AmountOfCurrentState extends State<AmountOfCurrent> {
         appBar: AppBar(
           title: const Text('Amount of current'),
           actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const AmountOfCurrentExample()));
+                },
+                icon: const Icon(Icons.money_rounded)),
             IconButton(
                 onPressed: () {
                   _createData();
